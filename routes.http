@@ -1,1 +1,28 @@
 POST http://localhost:3333/videos
+Content-Type: application/json 
+//formato dos dados que estao sendo enviados para o backend
+
+{
+    "Title": "Video 01",
+    "Description" : "Primeiro video",
+    "Duration" : 120
+}
+
+###
+
+GET http://localhost:3333/videos
+
+###
+
+PUT http://localhost:3333/videos/b1d6b9eb-1038-4009-8ef1-3726bb6639c
+Content-Type: application/json
+
+{
+    "Tittle" : "Video 02",
+    "Description" : "Primeiro video",
+    "Duration" : 120
+}
+
+###
+
+DELETE http://localhost:3333/videos/4880e7b4-9d13-49c4-96f9-3619391b6f8e

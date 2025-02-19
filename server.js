@@ -20,6 +20,7 @@
 
 import { fastify } from 'fastify'
 import { databaseMemory } from "./database-memory.js"
+import { log } from 'node:console'
 
 const server = fastify() //criação do servidor
 const database = new databaseMemory() //Criação do Database
@@ -27,24 +28,45 @@ const database = new databaseMemory() //Criação do Database
 // CRUD = CREATE, READ, UPDATE E DELETE
 
 server.post('/videos', (request, reply) => { //adicionara um video
+
+    const {title, description, duration} = request.body  
+    
     database.create({
-        title: 'Video test',
-        description: 'Test',
-        duration: 180  //em segundos
+        title,
+        description,
+        duration,
     })
-    console.log(database.listen) // listar os filmes
     return reply.status(201).send()
 })
 
 
 server.get('/videos', () => { //retornara o o video do usuario //apenas a rota get podemos testar pelo navegador
-    return 'Hello Word'
+    const videos = database.list()
+
+    console.log(videos);
+    
+    
+    return videos
 })
-server.put('/videos', () => { //atualizara o video
-    return 'Hello Word'
+server.put('/videos/:id', (request, reply) => { //atualizara o video
+    const videoId = request.params.id
+    const {title, description, duration} = request.body
+
+    database.update(videoId,{
+        title,
+        description,
+        duration,
+    })
+    
+    return reply.status(204).send()
+
 })
-server.delete('/videos', () => { //exclusão do video
-    return 'Hello Word'
+server.delete('/videos', (request, reply) => { //exclusão do video
+    const videoId = request.params.id
+
+    database.delete(videoId)
+
+    return reply.status(204).send()
 })
 
 server.listen({

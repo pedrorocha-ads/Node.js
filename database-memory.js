@@ -1,10 +1,17 @@
-import { randomUUID } from "crypto"
-export { databaseMemory }
+import { randomUUID } from "node:crypto"
 
-class databaseMemory{
+export class databaseMemory{
     #videos = new Map()
     list(){ //retornarna todos os videos 
-        this.#videos.values()
+        return Array.from(this.#videos.entries()).map((videoArray) => {
+            const id = videoArray[0]
+            const data = videoArray[1]
+
+            return {
+                id,
+                ...data,
+            }
+        })
     }
     create(video){ //criar o video
         const videoId = randomUUID() //Id unico e universal
