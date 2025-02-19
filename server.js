@@ -19,16 +19,31 @@
 // server.listen(3333) //permite rodar varias aplicações diferentes em portas diferentes, basta mudar a porta
 
 import { fastify } from 'fastify'
+import { databaseMemory } from "./database-memory.js"
 
 const server = fastify() //criação do servidor
+const database = new databaseMemory() //Criação do Database
 
-server.get('/', () => { //pagina inicial
+// CRUD = CREATE, READ, UPDATE E DELETE
+
+server.post('/videos', (request, reply) => { //adicionara um video
+    database.create({
+        title: 'Video test',
+        description: 'Test',
+        duration: 180  //em segundos
+    })
+    console.log(database.listen) // listar os filmes
+    return reply.status(201).send()
+})
+
+
+server.get('/videos', () => { //retornara o o video do usuario //apenas a rota get podemos testar pelo navegador
     return 'Hello Word'
 })
-server.get('/nome', () => { //retornara o nome do usuario
-    return 'Hello Pedro'
+server.put('/videos', () => { //atualizara o video
+    return 'Hello Word'
 })
-server.get('/endereco', () => { //retornara o endereço do usuario
+server.delete('/videos', () => { //exclusão do video
     return 'Hello Word'
 })
 
@@ -36,6 +51,6 @@ server.listen({
     port: 3333,
 })
 
-// CRUD = CREATE, READ, UPDATE E DELETE
+
 
 
